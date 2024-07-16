@@ -123,7 +123,6 @@ func buscarCotacao(ctx context.Context) (*Cotacao, error) {
 }
 
 func gravarCotacao(ctx context.Context, cotacao *Cotacao) error {
-
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Millisecond)
 	defer cancel()
 
