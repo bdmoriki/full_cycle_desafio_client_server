@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -127,7 +127,7 @@ func gravarCotacao(ctx context.Context, cotacao *Cotacao) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Millisecond)
 	defer cancel()
 
-	err := DB.WithContext(ctx).Create(&CotacaoTable{
+	err := DB.WithContext(ctx).Save(&CotacaoTable{
 		Code:       cotacao.USDBRL.Code,
 		Codein:     cotacao.USDBRL.Codein,
 		Name:       cotacao.USDBRL.Name,
