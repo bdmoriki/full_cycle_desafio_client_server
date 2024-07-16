@@ -48,7 +48,7 @@ func main() {
 	var c Cotacao
 	err = json.Unmarshal([]byte(body), &c)
 	if err != nil {
-		log.Printf("Falha ao codificar a resposta : %v\n", err)
+		log.Printf("Falha ao codificar a resposta: %v\n", err)
 		panic(err)
 	}
 

@@ -11,7 +11,6 @@ import (
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 const ENDPOINT_COTACAO = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
@@ -57,9 +56,7 @@ func main() {
 	mux.HandleFunc("/cotacao", CotacaoHandler)
 
 	var err error
-	DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-	})
+	DB, err = gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		log.Printf("Falha ao fazer a conexão com o banco de dados: %v\n", err)
 		panic(err)
@@ -118,7 +115,7 @@ func buscarCotacao(ctx context.Context) (*Cotacao, error) {
 	var c Cotacao
 	err = json.Unmarshal(body, &c)
 	if err != nil {
-		log.Printf("Falha ao codificar a resposta : %v\n", err)
+		log.Printf("Falha ao codificar a resposta: %v\n", err)
 		return nil, err
 	}
 
