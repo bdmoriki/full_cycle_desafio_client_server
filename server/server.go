@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -62,6 +61,7 @@ func main() {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
+		log.Printf("Falha ao fazer a conexão com o banco de dados: %v\n", err)
 		panic(err)
 	}
 	DB.AutoMigrate(&CotacaoTable{})
@@ -95,6 +95,7 @@ func buscarCotacao(ctx context.Context) (*Cotacao, error) {
 
 	req, err := http.NewRequestWithContext(ctx, "GET", ENDPOINT_COTACAO, nil)
 	if err != nil {
+		log.Printf("Falha ao formatar requisição: %v\n", err)
 		return nil, err
 	}
 
@@ -110,12 +111,14 @@ func buscarCotacao(ctx context.Context) (*Cotacao, error) {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		log.Printf("Falha ao ler o body da resposta: %v\n", err)
 		return nil, err
 	}
 
 	var c Cotacao
 	err = json.Unmarshal(body, &c)
 	if err != nil {
+		log.Printf("Falha ao codificar a resposta : %v\n", err)
 		return nil, err
 	}
 
@@ -145,15 +148,7 @@ func gravarCotacao(ctx context.Context, cotacao *Cotacao) error {
 			// Retornar erro nos logs caso o tempo de execução seja insuficiente.
 			log.Println("Falha ao inserir as informações de cotação pois a operação ultrapassou os 10ms permitidos.")
 		}
-		log.Println("Falha", err)
 		return err
-	}
-
-	var cotacoes []CotacaoTable
-	DB.Find(&cotacoes)
-
-	for _, c1 := range cotacoes {
-		fmt.Println(c1)
 	}
 
 	return nil

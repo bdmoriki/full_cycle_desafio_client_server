@@ -25,6 +25,7 @@ func main() {
 
 	req, err := http.NewRequestWithContext(ctx, "GET", ENDPOINT_SERVER_COTACACAO, nil)
 	if err != nil {
+		log.Printf("Falha ao formatar requisição: %v\n", err)
 		panic(err)
 	}
 
@@ -40,13 +41,14 @@ func main() {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		log.Printf("Falha ao ler o body da resposta: %v\n", err)
 		panic(err)
 	}
 
 	var c Cotacao
 	err = json.Unmarshal([]byte(body), &c)
 	if err != nil {
-		log.Printf("Falha ao codificar a resposta : %v", err)
+		log.Printf("Falha ao codificar a resposta : %v\n", err)
 		panic(err)
 	}
 
@@ -60,7 +62,7 @@ func main() {
 
 	_, err = file.WriteString(fmt.Sprintf("Dólar: %s", c.Bid))
 	if err != nil {
-		fmt.Printf("Erro ao criar o arquivo: %v\n", err)
+		fmt.Printf("Erro ao gravar as informações de cotação no arquivo: %v\n", err)
 		panic(err)
 	}
 }
