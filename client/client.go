@@ -55,14 +55,14 @@ func main() {
 	// O client.go terá que salvar a cotação atual em um arquivo "cotacao.txt" no formato: Dólar: {valor}
 	file, err := os.Create("cotacao.txt")
 	if err != nil {
-		fmt.Printf("Erro ao criar o arquivo: %v\n", err)
+		fmt.Printf("Falha ao criar o arquivo: %v\n", err)
 		panic(err)
 	}
 	defer file.Close()
 
 	_, err = file.WriteString(fmt.Sprintf("Dólar: %s", c.Bid))
 	if err != nil {
-		fmt.Printf("Erro ao gravar as informações de cotação no arquivo: %v\n", err)
+		fmt.Printf("Falha ao gravar as informações de cotação no arquivo: %v\n", err)
 		panic(err)
 	}
 }
